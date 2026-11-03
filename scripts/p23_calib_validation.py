@@ -52,7 +52,7 @@ WINDOWS = [("ближній край", 548, 178, 140, (4.0, 11.0), (334.85, 178.
 NOT_GROUND = Xc[1] < 1.45  # camera is 1.65 m above the road, y points down
 
 fig = plt.figure(figsize=(12, 8.2), facecolor=BG)
-gs = fig.add_gridspec(2, 3, left=0.075, right=0.99, top=0.90, bottom=0.03, wspace=0.05, hspace=0.16)
+gs = fig.add_gridspec(2, 3, left=0.085, right=0.99, top=0.88, bottom=0.03, wspace=0.05, hspace=0.16)
 cmap = plt.get_cmap("turbo")
 
 for r, (wlabel, wu, wv, ws, (zmin, zmax), (bx0, by0, bx1, by1), side) in enumerate(WINDOWS):
@@ -76,20 +76,20 @@ for r, (wlabel, wu, wv, ws, (zmin, zmax), (bx0, by0, bx1, by1), side) in enumera
         for sp in ax.spines.values():
             sp.set_color(accent); sp.set_linewidth(2.2)
         if r == 0:
-            ax.set_title(clabel, color=accent, fontsize=17, fontweight="bold", pad=8)
+            ax.set_title(clabel, color=accent, fontsize=26, fontweight="bold", pad=8)
         if col == 0:
-            ax.set_ylabel(f"{wlabel}\nZ ≈ {Z:.0f} м", color=FG, fontsize=14, labelpad=8)
-            txt = "точки лягають на краї"
+            ax.set_ylabel(f"{wlabel}\nZ ≈ {Z:.0f} м", color=FG, fontsize=21, labelpad=8)
+            txt = "точки на краях"
         else:
             du = float(np.median(u[obj] - u0[obj]))
             pred = f * YAW / np.cos(theta) ** 2 if col == 1 else f * DT / Z
             formula = "f·δθ" if col == 1 else "f·δt/Z"
-            txt = f"Δu = {du:.1f} px   ({formula} = {pred:.1f})"
+            txt = f"Δu = {du:.1f} px\n{formula} = {pred:.1f}"
             print(f"{wlabel:14s} Z={Z:5.1f} theta={np.rad2deg(theta):5.1f}deg {clabel:14s} du={du:5.2f} pred={pred:5.2f}")
-        ax.text(0.5, 0.03, txt, transform=ax.transAxes, ha="center", va="bottom", color=FG, fontsize=13,
+        ax.text(0.5, 0.03, txt, transform=ax.transAxes, ha="center", va="bottom", color=FG, fontsize=20,
                 bbox=dict(boxstyle="round,pad=0.3", fc="#000000c8", ec=accent if col else "none", lw=1.2))
 
-fig.text(0.075, 0.955, f"KITTI {stem} · f = {f:.1f} px · пунктир = край об'єкта за правильної калібровки",
-         color=MUTED, fontsize=12, va="center")
+fig.text(0.075, 0.962, f"KITTI {stem} · f = {f:.1f} px · пунктир = край об'єкта за правильної калібровки",
+         color=MUTED, fontsize=17, va="center")
 fig.savefig(out, dpi=200, facecolor=BG)
 print("saved", out)
