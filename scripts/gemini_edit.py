@@ -1,5 +1,7 @@
 """Edit an image with Gemini: gemini_edit.py <image> <prompt.txt> <out> [aspect] [model].
 
+Pass "-" as <image> to generate from the prompt alone.
+
 Reads the API key from GEMINI_API_KEY.
 """
 import base64
@@ -13,8 +15,11 @@ img_path, prompt_path, out_path = sys.argv[1:4]
 aspect = sys.argv[4] if len(sys.argv) > 4 else None
 model = sys.argv[5] if len(sys.argv) > 5 else "gemini-3-pro-image"
 
-with open(img_path, "rb") as f:
-    data = base64.b64encode(f.read()).decode()
+parts = []
+if img_path != "-":
+    with open(img_path, "rb") as f:
+        data = base64.b64encode(f.read()).decode()
+    parts.append({"inlineData": {"mimeType": mimetypes.guess_type(img_path)[0] or "image/png", "data": data}})
 with open(prompt_path, encoding="utf-8") as f:
     prompt = f.read()
 
@@ -25,10 +30,7 @@ if aspect:
 if size:
     gen["imageConfig"]["imageSize"] = size
 body = {
-    "contents": [{"parts": [
-        {"inlineData": {"mimeType": mimetypes.guess_type(img_path)[0] or "image/png", "data": data}},
-        {"text": prompt},
-    ]}],
+    "contents": [{"parts": parts + [{"text": prompt}]}],
     "generationConfig": gen,
 }
 req = urllib.request.Request(

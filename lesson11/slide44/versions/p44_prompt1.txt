@@ -1,0 +1,9 @@
+Wide technical illustration for a lecture slide, dark theme, flat solid background color exactly #1E2124 (very dark charcoal) filling the whole image edge to edge, no vignette, no frame, no border.
+
+Concept: ACTIVE sensors versus a PASSIVE sensor, side by side, split into a left half and a right half with a thin subtle vertical divider in the middle.
+
+LEFT HALF (active, cool cyan/teal #2EC4B6 palette): a small quadcopter drone on the far left carrying a compact LiDAR puck and a small radar module. The sensors EMIT energy outward to the right: a fan of thin cyan laser rays and a few concentric cyan radar wave arcs travel toward a simple parked car silhouette; small return rays come back from the car to the drone. Arrows clearly show energy going OUT from the drone and coming BACK.
+
+RIGHT HALF (passive, warm orange #F07A1E palette): the same kind of drone on the far right carrying a single small thermal camera. The drone emits NOTHING. Instead, a walking person and a car silhouette in the scene glow warm orange/yellow (thermal white-hot style), and soft wavy warm heat radiation travels FROM the person and car TO the camera. Arrows clearly point INTO the camera only.
+
+Style: clean modern vector-like infographic with soft neon glow, consistent line weight, high contrast on the dark background, minimalist, lots of breathing room. Absolutely NO text, NO letters, NO numbers, NO labels, NO logos anywhere in the image.
