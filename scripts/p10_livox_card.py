@@ -35,7 +35,7 @@ def livox(duration_ms):
 def strip(duration_ms, w, h):
     fig = plt.figure(figsize=(w / 100, h / 100), dpi=100)
     fig.patch.set_alpha(0)
-    ax = fig.add_axes([0.10, 0.19, 0.85, 0.78])
+    ax = fig.add_axes([0.12, 0.22, 0.83, 0.71])
     ax.set_facecolor("#0d0612")
     az, el = livox(duration_ms)
     ax.scatter(az, el, s=0.25 if duration_ms > 200 else 0.9, c=MAGENTA, alpha=0.4 if duration_ms > 200 else 1,
@@ -46,7 +46,7 @@ def strip(duration_ms, w, h):
     ax.set_xticklabels(["0°", "180°", "360°"])
     ax.set_yticks([-7, 52])
     ax.set_yticklabels(["-7°", "52°"])
-    ax.tick_params(colors="#c9c2d0", labelsize=28, length=4, pad=3)
+    ax.tick_params(colors="#c9c2d0", labelsize=42, length=4, pad=3)
     ax.tick_params(axis="y", pad=10)
     for sp in ax.spines.values():
         sp.set_color("#e6e0ea")
@@ -67,20 +67,20 @@ a[Y0:Y1, X0:X1] = (1 - w) * top[None] + w * bot[None]
 im = Image.fromarray(a.clip(0, 255).astype(np.uint8)).convert("RGBA")
 
 W = X1 - X0
-font = ImageFont.truetype(FONT[0], 66)
+font = ImageFont.truetype(FONT[0], 88)
 font.set_variation_by_name(FONT[1])
-small = ImageFont.truetype(FONT[0], 50)
+small = ImageFont.truetype(FONT[0], 68)
 small.set_variation_by_name(FONT[1])
 d = ImageDraw.Draw(im)
 
-y = Y0 + 60
+y = Y0 + 40
 for dur, label in [(100, "За 100 мс (1 кадр)"), (1000, "За 1 с (10 кадрів)")]:
     d.text((X0 + W // 2, y), label, font=font, fill=WHITE, anchor="mt")
-    img = strip(dur, W - 20, 460)
-    im.alpha_composite(img, (X0 + 10, y + 85))
-    y += 85 + 460 + 50
+    img = strip(dur, W - 20, 440)
+    im.alpha_composite(img, (X0 + 10, y + 105))
+    y += 105 + 440 + 30
 
 d.text((X0 + W // 2, y + 10), "Патерн не повторюється:\nпокриття FoV росте з часом",
-       font=small, fill=WHITE, anchor="ma", align="center", spacing=10)
+       font=small, fill=WHITE, anchor="ma", align="center", spacing=12)
 im.convert("RGB").save(out, quality=93)
 print("saved", out)
