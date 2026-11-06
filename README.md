@@ -54,3 +54,8 @@ Gemini добре дає оформлення, але плутає текст і
 
 Кадри та скани KITTI: Geiger et al., *Vision meets Robotics: The KITTI Dataset*, IJRR 2013 ·
 [cvlibs.net/datasets/kitti](https://www.cvlibs.net/datasets/kitti/). Ліцензія CC BY-NC-SA 3.0, тобто лише некомерційне використання.
+
+Радарні детекції для слайда 18 (`p18_egomotion.png`): Schumann et al., *RadarScenes: A Real-World Radar Point Cloud
+Data Set for Automotive Applications*, FUSION 2021 · [zenodo.org/record/4559821](https://zenodo.org/record/4559821),
+sequence_90. Ліцензія CC BY-NC-SA 4.0. Одну послідовність можна взяти з 11-ГБ архіву без повного завантаження:
+`python scripts/http_zip.py <url> get RadarScenes/data/sequence_90/radar_data.h5 seq90.h5`.
