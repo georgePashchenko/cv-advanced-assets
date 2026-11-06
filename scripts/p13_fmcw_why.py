@@ -25,9 +25,9 @@ RED = "#ef6b6b"
 
 
 # ---- waveforms: pulsed (high peak, then silence) vs FMCW (low, continuous, rising frequency) ----
-fig, axes = plt.subplots(2, 1, figsize=(9.6, 2.0), sharex=True)
+fig, axes = plt.subplots(2, 1, figsize=(9.6, 1.8), sharex=True)
 fig.patch.set_alpha(0)
-fig.subplots_adjust(left=0.16, right=0.70, top=0.97, bottom=0.04, hspace=0.25)
+fig.subplots_adjust(left=0.19, right=0.65, top=0.97, bottom=0.03, hspace=0.3)
 t = np.linspace(0, 3, 6000)
 
 ax = axes[0]
@@ -38,10 +38,10 @@ for t0 in (0.05, 1.55):
 ax.plot(t, y, color=PULSE, lw=1.1)
 ax.axvspan(0.05, 0.17, color=RED, alpha=0.25, lw=0)
 ax.set_ylim(-1.2, 1.2)
-ax.text(-0.06, 0, "Імпульсний", color=PULSE, fontsize=13, fontweight="bold", ha="right", va="center",
+ax.text(-0.06, 0, "Імпульсний", color=PULSE, fontsize=17, fontweight="bold", ha="right", va="center",
         transform=ax.get_yaxis_transform())
-ax.text(0.85, 0.35, "тиша: слухає ехо", color=MUTED, fontsize=11, ha="center", va="center")
-ax.text(3.08, 0, "пік сотні Вт – кВт;\nпоки передає — не чує", color=BODY, fontsize=11, va="center")
+ax.text(0.85, 0.45, "тиша: слухає ехо", color=MUTED, fontsize=15, ha="center", va="center")
+ax.text(3.08, 0, "пік: сотні Вт – кВт\nпоки передає — не чує", color=BODY, fontsize=15, va="center")
 
 ax = axes[1]
 tc = 0.5  # chirp period, schematic
@@ -49,10 +49,10 @@ tau = t % tc
 y = 0.32 * np.sin(2 * np.pi * (8 * tau + 40 * tau ** 2 / tc) / tc * tc)
 ax.plot(t, y, color=CYAN, lw=1.0)
 ax.set_ylim(-1.2, 1.2)
-ax.text(-0.06, 0, "FMCW", color=CYAN, fontsize=13, fontweight="bold", ha="right", va="center",
+ax.text(-0.06, 0, "FMCW", color=CYAN, fontsize=17, fontweight="bold", ha="right", va="center",
         transform=ax.get_yaxis_transform())
-ax.text(3.08, 0, "десятки мВт, безперервно;\nчастота росте в кожному chirp,\nпередає й слухає одночасно",
-        color=BODY, fontsize=11, va="center")
+ax.text(3.08, 0, "десятки мВт, безперервно\nпередає й чує одночасно",
+        color=BODY, fontsize=15, va="center")
 for ax in axes:
     ax.set_xlim(0, 3)
     ax.axis("off")
@@ -91,9 +91,9 @@ ax.plot(*zip(R, R + 8.8 * los), color=CYAN, lw=1, ls=(0, (4, 3)), alpha=0.8)
 # radar icon
 ax.add_patch(Polygon([R + [-0.35, -0.45], R + [0.35, -0.45], R + [0, 0.1]], closed=True, color=MUTED))
 ax.add_patch(plt.Circle(R + [0, 0.12], 0.17, color=FG))
-ax.text(R[0], R[1] - 0.75, "радар", color=MUTED, fontsize=11, ha="center", va="top")
+ax.text(R[0], R[1] - 0.75, "радар", color=MUTED, fontsize=15, ha="center", va="top")
 
-drone(ax, *D, 0.3, FG)
+drone(ax, *D, 0.38, FG)
 theta = np.radians(55)  # angle between v and the line of sight
 v = 1.9 * (np.cos(theta) * -los + np.sin(theta) * perp)  # moving towards the radar and sideways
 vr = np.dot(v, -los) * -los
@@ -111,13 +111,13 @@ da = (a1 - a0 + 180) % 360 - 180  # signed shortest turn from -los to v
 arc = np.radians(a0 + np.linspace(0, da, 30))
 ax.plot(D[0] + 0.6 * np.cos(arc), D[1] + 0.6 * np.sin(arc), color=FG, lw=1)
 am = np.radians(a0 + da / 2)
-ax.text(D[0] + 0.85 * np.cos(am), D[1] + 0.85 * np.sin(am), "θ", color=FG, fontsize=13, ha="center", va="center")
+ax.text(D[0] + 0.85 * np.cos(am), D[1] + 0.85 * np.sin(am), "θ", color=FG, fontsize=18, ha="center", va="center")
 
-ax.text(*(D + v + [0.1, 0.12]), r"$\mathbf{v}$", color=FG, fontsize=16, ha="left", va="bottom")
-ax.text(*(D + vr + [-0.05, -0.3]), r"$\mathbf{v_r}$", color=CYAN, fontsize=16, ha="center", va="top")
-ax.text(*(D + vp + [0.15, 0]), r"$v_\perp$", color=MUTED, fontsize=15, ha="left", va="center")
-ax.text(9.8, 0.55, "Doppler бачить лише $v_r = v\\cdot\\cos\\,θ$\nθ = 90° → $v_r = 0$: дрон «нерухомий»",
-        color=BODY, fontsize=11.5, ha="right", va="center", linespacing=1.4)
+ax.text(*(D + v + [0.1, 0.12]), r"$\mathbf{v}$", color=FG, fontsize=21, ha="left", va="bottom")
+ax.text(*(D + vr + [-0.05, -0.3]), r"$\mathbf{v_r}$", color=CYAN, fontsize=21, ha="center", va="top")
+ax.text(*(D + vp + [0.15, 0]), r"$v_\perp$", color=MUTED, fontsize=20, ha="left", va="center")
+ax.text(9.9, 0.5, "Doppler бачить лише $v_r = v\\cdot\\cos\\,θ$\nθ = 90° → $v_r = 0$: дрон «нерухомий»",
+        color=BODY, fontsize=16, ha="right", va="center", linespacing=1.4)
 fig.savefig(os.path.join(out_dir, "p13_doppler_vr.png"), dpi=300, transparent=True)
 plt.close(fig)
 print("ok")
