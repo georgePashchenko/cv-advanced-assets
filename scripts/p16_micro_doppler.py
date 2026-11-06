@@ -1,6 +1,7 @@
 """Slides 16 / 54: micro-Doppler spectrograms of a hovering drone and a flying bird at 77 GHz, Tc = 50 us.
 
-Usage: p16_micro_doppler.py <out.png>
+Usage: p16_micro_doppler.py <out.png> [--compact]
+--compact: wide, large-font variant without the footer (slide 17 layout with the RCS chart).
 The slow-time signal is sampled once per chirp (PRF 20 kHz -> unambiguous +-10 kHz), so blade returns
 (tip 88 m/s -> 45 kHz) alias across the band exactly as on the slide.
 """
@@ -13,7 +14,8 @@ import numpy as np
 from scipy.signal import stft
 
 out = sys.argv[1]
-plt.rcParams.update({"font.family": "Segoe UI", "font.size": 13})
+compact = "--compact" in sys.argv[2:]
+plt.rcParams.update({"font.family": "Segoe UI", "font.size": 16 if compact else 13})
 BG, FG, MUTED = "#181a19", "#e8ecea", "#a0a6a3"
 rng = np.random.default_rng(3)
 
@@ -62,26 +64,41 @@ def spectrogram(x, nper):
     return np.fft.fftshift(f) / 1e3, tt, S - S.max()
 
 
-fig, axs = plt.subplots(1, 2, figsize=(9.9, 6.16), facecolor=BG)
-fig.subplots_adjust(left=0.085, right=0.985, top=0.87, bottom=0.22, wspace=0.18)
-panels = [(axs[0], sig_d, 32, "дрон, зависання · 1 гвинт, 7000 об/хв", T_D, "час, мс", 1e3),
-          (axs[1], sig_b, 256, "птах, 8 м/с · махи крил 6 Гц", T_B, "час, с", 1)]
+if compact:
+    fig, axs = plt.subplots(1, 2, figsize=(9.9, 4.09), facecolor=BG)
+    fig.subplots_adjust(left=0.085, right=0.975, top=0.87, bottom=0.17, wspace=0.16)
+    titles = ["дрон зависає · гвинт 7000 об/хв", "птах · 8 м/с, крила 6 Гц"]
+else:
+    fig, axs = plt.subplots(1, 2, figsize=(9.9, 6.16), facecolor=BG)
+    fig.subplots_adjust(left=0.085, right=0.985, top=0.87, bottom=0.22, wspace=0.18)
+    titles = ["дрон, зависання · 1 гвинт, 7000 об/хв", "птах, 8 м/с · махи крил 6 Гц"]
+panels = [(axs[0], sig_d, 32, titles[0], T_D, "час, мс", 1e3),
+          (axs[1], sig_b, 256, titles[1], T_B, "час, с", 1)]
 for ax, x, nper, title, T, xl, sc in panels:
     f, tt, S = spectrogram(x, nper)
     ax.pcolormesh(tt * sc, f, S, shading="auto", cmap="magma", vmin=-40, vmax=0, rasterized=True)
     ax.set_facecolor(BG)
     ax.set_xlim(0, T * sc); ax.set_ylim(-10, 10)
-    ax.set_title(title, color=FG, fontsize=13.5, pad=8)
+    ax.set_title(title, color=FG, fontsize=17 if compact else 13.5, pad=8)
     ax.set_xlabel(xl, color=MUTED)
     ax.tick_params(colors=MUTED)
     for sp in ax.spines.values():
         sp.set_color("#3a3f3c")
 axs[0].set_ylabel("Doppler, кГц", color=MUTED)
-axs[1].annotate("тіло: 2v/λ ≈ 4.1 кГц", (0.5, 4.1), xytext=(0.5, 8.6), color=FG, fontsize=12, ha="center",
-                arrowprops=dict(arrowstyle="->", color=FG, lw=1))
-axs[0].annotate("тіло ≈ 0", (50, 0), xytext=(50, -8.6), color=FG, fontsize=12, ha="center",
-                bbox=dict(boxstyle="round,pad=0.2", fc="#000000b0", ec="none"),
-                arrowprops=dict(arrowstyle="->", color=FG, lw=1))
+fs = 15 if compact else 12
+box = dict(boxstyle="round,pad=0.2", fc="#000000b0", ec="none")
+axs[1].annotate("тіло: 2v/λ ≈ 4.1 кГц", (0.5, 4.1), xytext=(0.5, 8.6), color=FG, fontsize=fs, ha="center",
+                bbox=box if compact else None, arrowprops=dict(arrowstyle="->", color=FG, lw=1))
+axs[0].annotate("тіло ≈ 0", (50, 0), xytext=(50, -8.6), color=FG, fontsize=fs, ha="center",
+                bbox=box, arrowprops=dict(arrowstyle="->", color=FG, lw=1))
+if compact:
+    axs[0].text(50, 6.5, "спалахи лопатей:\n45 кГц, загорнуті", color=FG, fontsize=fs, ha="center",
+                va="center", bbox=box)
+    axs[1].text(0.5, -1.2, "крила — синусоїда\nнавколо тіла", color=FG, fontsize=fs, ha="center",
+                va="center", bbox=box)
+    fig.savefig(out, dpi=200, facecolor=BG)
+    print("saved", out)
+    sys.exit()
 fig.text(0.5, 0.035, "модель: 77 ГГц, Tc = 50 мкс → ±10 кГц. Лопаті (до 45 кГц) загортаються у вертикальні спалахи:\n"
          "233 за секунду на гвинт, 4 гвинти — вчетверо щільніше. Крила — синусоїда навколо лінії тіла.",
          color=MUTED, fontsize=10.5, ha="center")
