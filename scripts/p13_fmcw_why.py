@@ -116,8 +116,8 @@ ax.text(D[0] + 0.85 * np.cos(am), D[1] + 0.85 * np.sin(am), "θ", color=FG, font
 ax.text(*(D + v + [0.1, 0.12]), r"$\mathbf{v}$", color=FG, fontsize=21, ha="left", va="bottom")
 ax.text(*(D + vr + [-0.05, -0.3]), r"$\mathbf{v_r}$", color=CYAN, fontsize=21, ha="center", va="top")
 ax.text(*(D + vp + [0.15, 0]), r"$v_\perp$", color=MUTED, fontsize=20, ha="left", va="center")
-ax.text(9.9, 0.5, "Doppler бачить лише $v_r = v\\cdot\\cos\\,θ$\nθ = 90° → $v_r = 0$: дрон «нерухомий»",
-        color=BODY, fontsize=16, ha="right", va="center", linespacing=1.4)
+ax.text(5.9, 0.5, "Doppler бачить лише $v_r = v\\cdot\\cos\\,θ$\nθ = 90° → $v_r = 0$: дрон «нерухомий»",
+        color=BODY, fontsize=16, ha="center", va="center", linespacing=1.4)
 fig.savefig(os.path.join(out_dir, "p13_doppler_vr.png"), dpi=300, transparent=True)
 plt.close(fig)
 print("ok")
