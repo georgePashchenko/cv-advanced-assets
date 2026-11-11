@@ -1,0 +1,2 @@
+lesson12/gen2/versions/p8_rgb_v1.png lesson12/gen2/versions/e_p8_t.txt lesson12/gen2/versions/p8_t_v1.png 1:1
+lesson12/gen2/versions/p38_rgb_v1.png lesson12/gen2/versions/e_p38_t.txt lesson12/gen2/versions/p38_t_v1.png 16:9
