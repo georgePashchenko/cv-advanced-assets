@@ -100,7 +100,8 @@ def platforms():
         save(band(im, 416 / 130, top), f"p_{key}_strip.jpg")
         W, H = im.size
         w = int(H * 4 / 3)
-        t = im.crop(((W - w) // 2, 0, (W - w) // 2 + w, H)).resize((720, 540), Image.LANCZOS)
+        box = (220, 150, 1220, 900) if key == "isr" else ((W - w) // 2, 0, (W - w) // 2 + w, H)   # below the RGB / LWIR tags
+        t = im.crop(box).resize((720, 540), Image.LANCZOS)
         tag(t, (20, 484), label, 30)
         tiles.append(t)
     gap = 28
